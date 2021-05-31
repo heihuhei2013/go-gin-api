@@ -6,6 +6,7 @@ import (
 	"github.com/xinliangnote/go-gin-api/internal/api/controller/config_handler"
 	"github.com/xinliangnote/go-gin-api/internal/api/controller/menu_handler"
 	"github.com/xinliangnote/go-gin-api/internal/api/controller/tool_handler"
+	"github.com/xinliangnote/go-gin-api/internal/miniapi/controller/user_handler"
 	"github.com/xinliangnote/go-gin-api/internal/pkg/core"
 )
 
@@ -66,5 +67,12 @@ func setApiRouter(r *resource) {
 		configHandler := config_handler.New(r.logger, r.db, r.cache)
 		api.PATCH("/config/email", configHandler.Email())
 
+	}
+
+	//微信小程序
+	userHandler := user_handler.New(r.logger, r.db, r.cache)
+	miniappapi := r.mux.Group("/miniapi") // r.middles.Signature())
+	{
+		miniappapi.POST("/miniapp/loginbyweixin", userHandler.LoginByWeiXin())
 	}
 }

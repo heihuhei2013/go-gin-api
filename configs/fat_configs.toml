@@ -22,19 +22,19 @@
     maxopenconn = 10
 
   [mysql.read]
-    addr = "127.0.0.1:3306"
-    name = "go_gin_api"
-    pass = "root"
-    user = "root"
+    addr = "192.168.199.230:3306"
+    name = "mikemall"
+    pass = "123456"
+    user = "mall"
 
   [mysql.write]
-    addr = "127.0.0.1:3306"
-    name = "go_gin_api"
-    pass = "root"
-    user = "root"
+    addr = "192.168.199.230:3306"
+    name = "mikemall"
+    pass = "123456"
+    user = "mall"
 
 [redis]
-  addr = "127.0.0.1:6379"
+  addr = "192.168.199.230:6379"
   db = "0"
   maxretries = 3
   minidleconns = 5
