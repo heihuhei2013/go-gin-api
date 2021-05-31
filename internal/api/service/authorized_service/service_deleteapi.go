@@ -1,6 +1,7 @@
 package authorized_service
 
 import (
+	"github.com/xinliangnote/go-gin-api/configs"
 	"github.com/xinliangnote/go-gin-api/internal/api/repository/db_repo"
 	"github.com/xinliangnote/go-gin-api/internal/api/repository/db_repo/authorized_api_repo"
 	"github.com/xinliangnote/go-gin-api/internal/pkg/cache"
@@ -20,19 +21,18 @@ func (s *service) DeleteAPI(ctx core.Context, id int32) (err error) {
 		return nil
 	}
 
-	model := authorized_api_repo.NewModel()
-	model.Id = id
-
 	data := map[string]interface{}{
 		"is_deleted":   1,
 		"updated_user": ctx.UserName(),
 	}
 
-	err = model.Updates(s.db.GetDbW().WithContext(ctx.RequestContext()), data)
+	qb := authorized_api_repo.NewQueryBuilder()
+	qb.WhereId(db_repo.EqualPredicate, id)
+	err = qb.Updates(s.db.GetDbW().WithContext(ctx.RequestContext()), data)
 	if err != nil {
 		return err
 	}
 
-	s.cache.Del(cacheKeyPrefix+authorizedApiInfo.BusinessKey, cache.WithTrace(ctx.Trace()))
+	s.cache.Del(configs.RedisKeyPrefixSignature+authorizedApiInfo.BusinessKey, cache.WithTrace(ctx.Trace()))
 	return
 }

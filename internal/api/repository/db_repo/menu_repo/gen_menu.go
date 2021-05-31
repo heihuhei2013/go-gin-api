@@ -30,20 +30,6 @@ func (t *Menu) Create(db *gorm.DB) (id int32, err error) {
 	return t.Id, nil
 }
 
-func (t *Menu) Delete(db *gorm.DB) (err error) {
-	if err = db.Delete(t).Error; err != nil {
-		return errors.Wrap(err, "delete err")
-	}
-	return nil
-}
-
-func (t *Menu) Updates(db *gorm.DB, m map[string]interface{}) (err error) {
-	if err = db.Model(&Menu{}).Where("id = ?", t.Id).Updates(m).Error; err != nil {
-		return errors.Wrap(err, "updates err")
-	}
-	return nil
-}
-
 type menuRepoQueryBuilder struct {
 	order []string
 	where []struct {
@@ -64,6 +50,30 @@ func (qb *menuRepoQueryBuilder) buildQuery(db *gorm.DB) *gorm.DB {
 	}
 	ret = ret.Limit(qb.limit).Offset(qb.offset)
 	return ret
+}
+
+func (qb *menuRepoQueryBuilder) Updates(db *gorm.DB, m map[string]interface{}) (err error) {
+	db = db.Model(&Menu{})
+
+	for _, where := range qb.where {
+		db.Where(where.prefix, where.value)
+	}
+
+	if err = db.Updates(m).Error; err != nil {
+		return errors.Wrap(err, "updates err")
+	}
+	return nil
+}
+
+func (qb *menuRepoQueryBuilder) Delete(db *gorm.DB) (err error) {
+	for _, where := range qb.where {
+		db = db.Where(where.prefix, where.value)
+	}
+
+	if err = db.Delete(&Menu{}).Error; err != nil {
+		return errors.Wrap(err, "delete err")
+	}
+	return nil
 }
 
 func (qb *menuRepoQueryBuilder) Count(db *gorm.DB) (int64, error) {
@@ -364,6 +374,49 @@ func (qb *menuRepoQueryBuilder) OrderByLevel(asc bool) *menuRepoQueryBuilder {
 	}
 
 	qb.order = append(qb.order, "level "+order)
+	return qb
+}
+
+func (qb *menuRepoQueryBuilder) WhereSort(p db_repo.Predicate, value int32) *menuRepoQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "sort", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *menuRepoQueryBuilder) WhereSortIn(value []int32) *menuRepoQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "sort", "IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *menuRepoQueryBuilder) WhereSortNotIn(value []int32) *menuRepoQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "sort", "NOT IN"),
+		value,
+	})
+	return qb
+}
+
+func (qb *menuRepoQueryBuilder) OrderBySort(asc bool) *menuRepoQueryBuilder {
+	order := "DESC"
+	if asc {
+		order = "ASC"
+	}
+
+	qb.order = append(qb.order, "sort "+order)
 	return qb
 }
 

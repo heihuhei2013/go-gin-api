@@ -17,6 +17,7 @@ const (
 	ResubmitMsg        = 10107
 	HashIdsDecodeError = 10108
 	SignatureError     = 10109
+	RBACError          = 10110
 
 	// 业务模块级错误码
 	// 用户模块
@@ -45,6 +46,10 @@ const (
 	AdminLogOutError             = 20307
 	AdminModifyPasswordError     = 20308
 	AdminModifyPersonalInfoError = 20309
+	AdminMenuListError           = 20310
+	AdminMenuCreateError         = 20311
+	AdminOfflineError            = 20312
+	AdminDetailError             = 20313
 
 	// 配置
 	ConfigEmailError        = 20401
@@ -61,11 +66,14 @@ const (
 	SearchMySQLError = 20504
 
 	// 菜单栏
-	MenuCreateError = 20601
-	MenuUpdateError = 20602
-	MenuListError   = 20603
-	MenuDeleteError = 20604
-	MenuDetailError = 20605
+	MenuCreateError       = 20601
+	MenuUpdateError       = 20602
+	MenuListError         = 20603
+	MenuDeleteError       = 20604
+	MenuDetailError       = 20605
+	MenuCreateActionError = 20606
+	MenuListActionError   = 20607
+	MenuDeleteActionError = 20608
 )
 
 var codeText = map[int]string{
@@ -78,6 +86,7 @@ var codeText = map[int]string{
 	ResubmitMsg:        "请勿重复提交",
 	HashIdsDecodeError: "ID 参数有误",
 	SignatureError:     "Signature Error",
+	RBACError:          "暂无权限，请联系管理开通权限",
 
 	IllegalUserName: "非法用户名",
 	UserCreateError: "创建用户失败",
@@ -102,6 +111,10 @@ var codeText = map[int]string{
 	AdminLogOutError:             "退出失败",
 	AdminModifyPasswordError:     "修改密码失败",
 	AdminModifyPersonalInfoError: "修改个人信息失败",
+	AdminMenuListError:           "获取管理员菜单授权列表失败",
+	AdminMenuCreateError:         "管理员菜单授权失败",
+	AdminOfflineError:            "下线管理员失败",
+	AdminDetailError:             "获取个人信息失败",
 
 	ConfigEmailError:        "修改邮箱配置失败",
 	ConfigSaveError:         "写入配置文件失败",
@@ -115,11 +128,14 @@ var codeText = map[int]string{
 	SearchRedisEmpty: "查询的 Redis Key 不存在",
 	SearchMySQLError: "查询 MySQL 失败",
 
-	MenuCreateError: "创建菜单失败",
-	MenuUpdateError: "更新菜单失败",
-	MenuDeleteError: "删除菜单失败",
-	MenuListError:   "获取菜单列表页失败",
-	MenuDetailError: "获取菜单详情失败",
+	MenuCreateError:       "创建菜单失败",
+	MenuUpdateError:       "更新菜单失败",
+	MenuDeleteError:       "删除菜单失败",
+	MenuListError:         "获取菜单列表页失败",
+	MenuDetailError:       "获取菜单详情失败",
+	MenuCreateActionError: "创建菜单栏功能权限失败",
+	MenuListActionError:   "获取菜单栏功能权限列表失败",
+	MenuDeleteActionError: "删除菜单栏功能权限失败",
 }
 
 func Text(code int) string {

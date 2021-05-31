@@ -21,7 +21,7 @@ type updateUsedResponse struct {
 // @Summary 更新菜单为启用/禁用
 // @Description 更新菜单为启用/禁用
 // @Tags API.menu
-// @Accept json
+// @Accept multipart/form-data
 // @Produce json
 // @Param id formData string true "Hashid"
 // @Param used formData int true "是否启用 1:是 -1:否"

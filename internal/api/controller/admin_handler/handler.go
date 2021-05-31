@@ -56,6 +56,11 @@ type Handler interface {
 	// @Router /api/admin/{id} [delete]
 	Delete() core.HandlerFunc
 
+	// Offline 下线管理员
+	// @Tags API.admin
+	// @Router /api/admin/offline [patch]
+	Offline() core.HandlerFunc
+
 	// UpdateUsed 更新管理员为启用/禁用
 	// @Tags API.admin
 	// @Router /api/admin/used [patch]
@@ -65,6 +70,16 @@ type Handler interface {
 	// @Tags API.admin
 	// @Router /api/admin/reset_password/{id} [patch]
 	ResetPassword() core.HandlerFunc
+
+	// CreateAdminMenu 提交菜单授权
+	// @Tags API.admin
+	// @Router /api/admin/menu [post]
+	CreateAdminMenu() core.HandlerFunc
+
+	// ListAdminMenu 菜单授权列表
+	// @Tags API.admin
+	// @Router /api/admin/menu/:id [get]
+	ListAdminMenu() core.HandlerFunc
 }
 
 type handler struct {

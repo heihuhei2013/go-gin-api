@@ -36,10 +36,30 @@ type Handler interface {
 	// @Router /api/menu/used [patch]
 	UpdateUsed() core.HandlerFunc
 
+	// UpdateSort 更新菜单排序
+	// @Tags API.menu
+	// @Router /api/menu/sort [patch]
+	UpdateSort() core.HandlerFunc
+
 	// List 菜单列表
 	// @Tags API.menu
 	// @Router /api/menu [get]
 	List() core.HandlerFunc
+
+	// CreateAction 创建功能权限
+	// @Tags API.menu
+	// @Router /api/menu_action [post]
+	CreateAction() core.HandlerFunc
+
+	// ListAction 功能权限列表
+	// @Tags API.menu
+	// @Router /api/menu_action [get]
+	ListAction() core.HandlerFunc
+
+	// DeleteAction 删除功能权限
+	// @Tags API.menu
+	// @Router /api/menu_action/{id} [delete]
+	DeleteAction() core.HandlerFunc
 }
 
 type handler struct {
